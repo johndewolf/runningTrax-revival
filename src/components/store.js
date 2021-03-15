@@ -2,6 +2,7 @@ import React, {createContext, useReducer} from "react";
 
 const initialState = {
     miles: [],
+    editingMile: 0,
     token: null
 };
 const reducer = (state, action) => {
@@ -10,6 +11,15 @@ const reducer = (state, action) => {
       return {
         ...state,
         miles: [...state.miles, action.payload]
+      }
+    case 'UPDATE_MILE':
+      let newState = {...state};
+        newState.miles[action.payload.index] =  action.payload.values;
+        return newState;  
+    case 'UPDATE_CURRENT_MILE':
+      return {
+        ...state,
+        editingMile: action.payload
       }
     default:
       throw new Error(`Unknown action: ${action.type}`)

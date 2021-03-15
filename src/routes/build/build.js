@@ -2,7 +2,8 @@ import React from "react";
 import { Row, Col } from 'antd';
 import FieldGroup from '../../components/field-group/field-group'
 import Sidebar from '../../components/sidebar/sidebar'
-function Build() {
+const Build = () => {
+
   return (
     <div>
       <h1>Build your playlist</h1>
