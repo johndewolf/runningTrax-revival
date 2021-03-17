@@ -1,13 +1,15 @@
-import React from "react";
-import { Row, Col } from 'antd';
+import { React, useContext } from "react";
+import { Row, Col, Button } from 'antd';
 import FieldGroup from '../../components/field-group/field-group'
 import Sidebar from '../../components/sidebar/sidebar'
+import Chart from '../../components/chart/chart'
+import { Context } from '../../components/store'
 const Build = () => {
-
+  const [state] = useContext(Context);
   return (
     <div>
       <h1>Build your playlist</h1>
-      <Row>
+      <Row gutter={16}>
         <Col xs={24} md={4}>
           <h3>Miles</h3>
           <Sidebar />
@@ -17,9 +19,12 @@ const Build = () => {
           <FieldGroup />
         </Col>
         <Col xs={24} md={12}>
-          Graph goes here
+          <Chart />
         </Col>
       </Row>
+      <div style={{marginTop: '3rem'}}>
+        <Button type="primary" disabled={ state.miles.length === 0 ? 'true' : false}>Generate Playlist</Button>
+      </div>
     </div>
   );
 }

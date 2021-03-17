@@ -12,7 +12,12 @@ const FieldGroup = () => {
   const [valid, setValidity] = useState(false);
 
   const checkIfValid = () => {
-    if (form.getFieldValue('genre') !== '' && form.getFieldValue('tempo') !== '' && form.getFieldValue('duration') !== '') {
+    //redo this;
+    if (
+      form.getFieldValue('genre') !== '' &&
+      form.getFieldValue('tempo') &&
+      form.getFieldValue('minutes')
+    ) {
       setValidity(true);
     }
   }
@@ -31,7 +36,8 @@ const FieldGroup = () => {
   }, [state.editingMile, state.miles])
 
   const handleAddMile = () => {
-    let durationInSeconds = (form.getFieldValue('minutes') * 60) + form.getFieldValue('seconds');
+    let seconds = form.getFieldValue('seconds') ? form.getFieldValue('seconds') : 0;
+    let durationInSeconds = (form.getFieldValue('minutes') * 60) + seconds;
 
     if (state.editingMile <= state.miles.length) {
       dispatch({type: 'UPDATE_MILE', payload: {index: state.editingMile, values : {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}}});
@@ -96,7 +102,7 @@ const FieldGroup = () => {
       </div>
       <legend>Tempo</legend>
       <Form.Item className="field-group-input" name="tempo" >
-        <Slider initialValue={180} min={120} max={220} onAfterChange={checkIfValid} />
+        <Slider min={120} max={220} onAfterChange={checkIfValid} />
       </Form.Item>
       <Button disabled={valid ? false : true} onClick={handleAddMile}>{state.editingMile < state.miles.length ? "Update" : "Add"} Mile <PlusCircleOutlined /></Button>
       {state.editingMile < state.miles.length ? <Button type="text" onClick={handleCancelClick}>Cancel</Button> : null}
