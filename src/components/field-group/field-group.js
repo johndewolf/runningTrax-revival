@@ -1,7 +1,8 @@
 import {useState, useEffect, useContext} from 'react';
-import { Form, Select, TimePicker, Slider, Button } from 'antd';
+import { Form, Select, InputNumber, Slider, Button } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Context } from '../store'
+import { formatMinutes, formatSeconds } from '../../utility'
 import './field-group.css';
 const { Option } = Select;
 
@@ -15,24 +16,37 @@ const FieldGroup = () => {
       setValidity(true);
     }
   }
+  const mile = state.miles[state.editingMile]
   useEffect(() => {
     if (typeof state.miles[state.editingMile] != 'undefined') {
-      form.setFieldsValue({genre: state.miles[state.editingMile].genre, tempo: state.miles[state.editingMile].tempo})
+      form.setFieldsValue({
+        genre: mile.genre,
+        tempo: mile.tempo,
+        minutes: formatMinutes(mile.duration),
+        seconds: formatSeconds(mile.duration)
+      })
+      setValidity(true);
     }
     
   }, [state.editingMile, state.miles])
 
   const handleAddMile = () => {
-    let val = form.getFieldValue('duration');
-    let seconds = (val.minutes() * 60) + val.seconds();
+    let durationInSeconds = (form.getFieldValue('minutes') * 60) + form.getFieldValue('seconds');
+
     if (state.editingMile <= state.miles.length) {
-      dispatch({type: 'UPDATE_MILE', payload: {index: state.editingMile, values : {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: seconds}}});
+      dispatch({type: 'UPDATE_MILE', payload: {index: state.editingMile, values : {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}}});
       
     }
     else {
       console.log('adding mile');
-      dispatch({type: 'ADD_MILE', payload: {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: seconds}});
+      dispatch({type: 'ADD_MILE', payload: {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}});
     }
+    dispatch({type: 'UPDATE_CURRENT_MILE', payload: state.miles.length });
+    setValidity(false);
+    form.resetFields();
+  }
+
+  const handleCancelClick = () => {
     dispatch({type: 'UPDATE_CURRENT_MILE', payload: state.miles.length });
     setValidity(false);
     form.resetFields();
@@ -40,11 +54,12 @@ const FieldGroup = () => {
 
   return(
     <Form className="field-group" form={form} >
+      <legend>Genre</legend>
       <Form.Item className="field-group-input" name="genre">
         <Select
         showSearch
         style={{ width: '100%' }}
-        placeholder="Genre"
+        placeholder="Pick a genre"
         optionFilterProp="children"
         onChange={checkIfValid}
         >
@@ -53,13 +68,38 @@ const FieldGroup = () => {
           <Option value="Rock">Rock</Option>
         </Select>
       </Form.Item>
-      <Form.Item className="field-group-input" name="duration">
-        <TimePicker format='mm:ss' placeholder="Mile Duration" onChange={checkIfValid} />
-      </Form.Item>
-      <Form.Item className="field-group-input" name="tempo" label="Tempo" >
+      <div className="field-group-input time-input">
+        <legend>Duration</legend>
+        <Form.Item name="minutes">
+            <InputNumber
+            initialvalues={8}
+            min={0}
+            max={59}
+            formatter={value => `${value} min`}
+            parser={value => value.replace(' %', '')}
+          />
+        </Form.Item>
+        <Form.Item name="seconds">
+          <InputNumber
+            initialvalues={0}
+            min={0}
+            max={59}
+            formatter={value => {
+                if (value < 10) {
+                  return `0${value} sec`;
+                }
+                return `${value} sec`;
+            }}
+            parser={value => value.replace(' %', '')}
+          />
+        </Form.Item>
+      </div>
+      <legend>Tempo</legend>
+      <Form.Item className="field-group-input" name="tempo" >
         <Slider initialValue={180} min={120} max={220} onAfterChange={checkIfValid} />
       </Form.Item>
-      <Button disabled={valid ? false : true} onClick={handleAddMile}>Add Mile <PlusCircleOutlined /></Button>
+      <Button disabled={valid ? false : true} onClick={handleAddMile}>{state.editingMile < state.miles.length ? "Update" : "Add"} Mile <PlusCircleOutlined /></Button>
+      {state.editingMile < state.miles.length ? <Button type="text" onClick={handleCancelClick}>Cancel</Button> : null}
     </Form>
   )
 }

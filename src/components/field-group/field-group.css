@@ -4,4 +4,10 @@
 
 .field-group-input {
   margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.field-group-input.time-input .ant-form-item {
+  margin-right: 1rem;
 }
