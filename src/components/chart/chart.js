@@ -9,7 +9,6 @@ const Chart = () => {
   const data = state.miles.map((mile, index) => {
     return { mile: index, tempo: mile.tempo, genre: mile.genre, duration: formatTimeString(mile.duration) }
   })
-  console.log(data);
   const config = {
     data: data,
     xField: 'mile',

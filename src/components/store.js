@@ -21,6 +21,11 @@ const reducer = (state, action) => {
         ...state,
         editingMile: action.payload
       }
+    case 'ADD_TOKEN':
+      return {
+        ...state,
+        token: action.payload
+      }
     default:
       throw new Error(`Unknown action: ${action.type}`)
   }

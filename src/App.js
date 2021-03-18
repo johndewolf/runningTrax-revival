@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useContext} from "react";
 
 import {
   BrowserRouter as Router,
@@ -16,7 +16,6 @@ import Build from './routes/build/build'
 import './App.css';
 const { Header, Content } = Layout;
 const App = () => {
-  
   return (
     <Store>
         <Router>
@@ -28,7 +27,7 @@ const App = () => {
             <Menu.Item key="2"><Link to="/build">Build</Link></Menu.Item>
           </Menu>
           </Header>
-          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
+          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, marginBottom: 64 }}>
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             <Switch>
               <Route path="/build" component={Build} />

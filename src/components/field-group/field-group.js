@@ -14,7 +14,7 @@ const FieldGroup = () => {
   const checkIfValid = () => {
     //redo this;
     if (
-      form.getFieldValue('genre') !== '' &&
+      form.getFieldValue('genre') &&
       form.getFieldValue('tempo') &&
       form.getFieldValue('minutes')
     ) {
@@ -79,7 +79,7 @@ const FieldGroup = () => {
         <Form.Item name="minutes">
             <InputNumber
             initialvalues={8}
-            min={0}
+            min={4}
             max={59}
             formatter={value => `${value} min`}
             parser={value => value.replace(' %', '')}
