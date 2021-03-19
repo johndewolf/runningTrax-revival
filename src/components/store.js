@@ -3,7 +3,8 @@ import React, {createContext, useReducer} from "react";
 const initialState = {
     miles: [],
     editingMile: 0,
-    token: null
+    token: null,
+    username: null,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -25,6 +26,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         token: action.payload
+      }
+    case 'UPDATE_USERNAME' :
+      return {
+        ...state,
+        username: action.payload
       }
     default:
       throw new Error(`Unknown action: ${action.type}`)

@@ -3,6 +3,7 @@ import { Form, Select, InputNumber, Slider, Button } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Context } from '../store'
 import { formatMinutes, formatSeconds } from '../../utility'
+import { getGenreSeeds } from '../../api/spotify'
 import './field-group.css';
 const { Option } = Select;
 
@@ -10,7 +11,7 @@ const FieldGroup = () => {
   const [state, dispatch] = useContext(Context);
   const [form] = Form.useForm();
   const [valid, setValidity] = useState(false);
-
+  const [genres, setGenres] = useState(['rock', 'rap', 'jazz'])
   const checkIfValid = () => {
     //redo this;
     if (
@@ -34,7 +35,13 @@ const FieldGroup = () => {
     }
     
   }, [state.editingMile, state.miles])
-
+  useEffect(() => {
+    if (state.token) {
+      getGenreSeeds(state.token)
+        .then(result => setGenres(result.data.genres))
+        .catch(error => console.log(error))
+    }
+  }, [state.token])
   const handleAddMile = () => {
     let seconds = form.getFieldValue('seconds') ? form.getFieldValue('seconds') : 0;
     let durationInSeconds = (form.getFieldValue('minutes') * 60) + seconds;
@@ -44,7 +51,6 @@ const FieldGroup = () => {
       
     }
     else {
-      console.log('adding mile');
       dispatch({type: 'ADD_MILE', payload: {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}});
     }
     dispatch({type: 'UPDATE_CURRENT_MILE', payload: state.miles.length });
@@ -60,6 +66,7 @@ const FieldGroup = () => {
 
   return(
     <Form className="field-group" form={form} >
+
       <legend>Genre</legend>
       <Form.Item className="field-group-input" name="genre">
         <Select
@@ -69,9 +76,7 @@ const FieldGroup = () => {
         optionFilterProp="children"
         onChange={checkIfValid}
         >
-          <Option value="reggae">Reggae</Option>
-          <Option value="Hip Hop">Hip Hop</Option>
-          <Option value="Rock">Rock</Option>
+          {genres.map(genre => (<Option key={genre} value={genre}>{genre}</Option>  ))}
         </Select>
       </Form.Item>
       <div className="field-group-input time-input">

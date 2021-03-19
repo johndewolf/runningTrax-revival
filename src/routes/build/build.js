@@ -1,5 +1,8 @@
 import { React, useContext, useEffect } from "react";
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Modal } from 'antd';
+import {
+  useHistory
+} from "react-router-dom";
 import FieldGroup from '../../components/field-group/field-group'
 import Sidebar from '../../components/sidebar/sidebar'
 import Chart from '../../components/chart/chart'
@@ -10,35 +13,42 @@ import { getProfileName } from '../../api/spotify'
 const Build = () => {
   const [state, dispatch] = useContext(Context);
   useEffect(() => {
+    if (window.localStorage.getItem('spotify_token')) {
+      dispatch({type: 'ADD_TOKEN', payload: window.localStorage.getItem('spotify_token')});
+    }
     let hash = getHash();
     if (hash.access_token) {
+      window.localStorage.setItem('spotify_token', hash.access_token);
+
       dispatch({type: 'ADD_TOKEN', payload: hash.access_token});
       window.location.hash = '';
-      fetch(' https://api.spotify.com/v1/me', { headers:
-        {
-          Authorization: `Bearer ${hash.access_token}`
-        }
-      })
-        .then(response => response.json())
-        .then(result => {
-            console.log(result)
-        })
     }
     
   }, [])
+  const handleOkClick = () => {
+    window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`;
+  }
+  const history = useHistory();
   return (
+
     <div>
       <h1>Build your playlist</h1>
       {!state.token && (
         (
-          <a
-            className="btn btn--loginApp-link"
-            href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}
-          >
-            Login to Spotify
-          </a>
+          <Modal 
+          visible={true}
+          title="Login to Continue"
+          onCancel={()=>history.push("/")}
+          maskClosable={false}
+          closable={false}
+          okText="Login"
+          onOk={handleOkClick}
+        >
+          <p>In order to continue, login with your Spotify account. Click the button below to continue</p>
+        </Modal>
         )
       )}
+
       <Row gutter={24}>
         <Col xs={24} md={4}>
           <h3>Miles</h3>

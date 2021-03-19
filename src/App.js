@@ -1,32 +1,26 @@
-import {React, useContext} from "react";
+import { React } from "react";
 
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import {
-  Layout,
-  Menu
+  Layout
 } from "antd";
 import Store from './components/store'
+import AppHeader from './components/header/header'
 import Home from './routes/home/home'
 import Build from './routes/build/build'
 import './App.css';
-const { Header, Content } = Layout;
+const { Content } = Layout;
 const App = () => {
+
   return (
     <Store>
         <Router>
           <Layout>
-          <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-          <div className="logo" />
-          <Menu theme="dark" mode="horizontal">
-            <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
-            <Menu.Item key="2"><Link to="/build">Build</Link></Menu.Item>
-          </Menu>
-          </Header>
+          <AppHeader />
           <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, marginBottom: 64 }}>
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             <Switch>
