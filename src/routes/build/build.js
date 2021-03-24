@@ -9,7 +9,6 @@ import Chart from '../../components/chart/chart'
 import { Context } from '../../components/store'
 import { authEndpoint, clientId, redirectUri, scopes } from '../../utility/constants'
 import { getHash } from '../../utility/'
-import { getProfileName } from '../../api/spotify'
 const Build = () => {
   const [state, dispatch] = useContext(Context);
   useEffect(() => {
@@ -63,7 +62,7 @@ const Build = () => {
         </Col>
       </Row>
       <div style={{marginTop: '3rem'}}>
-        <Button type="primary" disabled={ state.miles.length === 0 ? 'true' : false}>Generate Playlist</Button>
+        <Button onClick={() => {history.push("/result")}} type="primary" disabled={ state.miles.length === 0 ? 'true' : false}>Generate Playlist</Button>
       </div>
     </div>
   );

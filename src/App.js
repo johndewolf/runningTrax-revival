@@ -12,6 +12,7 @@ import Store from './components/store'
 import AppHeader from './components/header/header'
 import Home from './routes/home/home'
 import Build from './routes/build/build'
+import Result from './routes/result/result'
 import './App.css';
 const { Content } = Layout;
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             <Switch>
               <Route path="/build" component={Build} />
+              <Route path="/result" component={Result} />
               <Route path="/" component={Home} />
             </Switch>
           </div>
