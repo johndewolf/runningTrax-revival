@@ -12,52 +12,43 @@ export const getGenreSeeds = (token) => {
 }
 
 export const getPlaylistData = (token, miles) => {
-  console.log('firing get playlist data');
-  getSeedTracks(token, miles)
+
+  return getSeedTracks(token, miles)
     .then(tracks => {
       let returnData = miles.map((mile, index) => {
-        let mileTracks = tracks[index];
+        let totalTracks = tracks[index].tracks;
         let idealDuration = mile.duration * 1000;
-        let subset = findOptimalSubset(mileTracks, idealDuration);
-        debugger;
+        return getMileTracks(totalTracks, idealDuration)
       })
+      return returnData;
     })
 }
 
 
-const findOptimalSubset = (tracks, target) => {
-  var solutions = [], currentBest
+const getMileTracks = (tracks, target)  => {
+  tracks.sort((trackA, trackB) => {
+    return trackA.duration_ms - trackB.duration_ms;
+  })
 
-  function subsetSum(tracks, target, partial = [])   {
-    if (partial.length > 0) {
-
-      let solution = partial.reduce(function(total, currentTrack) {
-        return (total + currentTrack.duration_ms);
-      }, 0);
- 
-      let diffFromTarget = Math.abs(target - solution);
-      if ( currentBest === undefined || diffFromTarget < currentBest ){
-        currentBest = diffFromTarget;
-        console.log(partial);
-        solutions.push(partial);
-      }
-    }
-    for (var index = 0; index < tracks.length;  index++) {
-      if (currentBest === 0) {
-        return solutions;
-        break;
-      }
-      else {
-        var n = tracks[index];
-        var remaining = tracks.slice(index + 1, tracks.length);
-        var newPartial = partial.concat(n);
-        subsetSum(remaining, target, newPartial);
-      }
-    }
-    return solutions;
+  let returnTracks = [];
+  let offset = target;
+  let index = 0;
+  while (offset > 0 && index < 20) {
+    returnTracks.push(tracks[index]);
+    offset = offset - tracks[index].duration_ms;
+    index++;
   }
- var subsets = subsetSum(tracks, target)
- return subsets[subsets.length - 1];
+
+  let overValue = offset * -1;
+  let underValue = returnTracks.slice(0, returnTracks.length - 1).reduce((iterator, track) => {
+    return track.duration_ms + iterator;
+  }, 0)
+
+  if (overValue - offset <= target - underValue) {
+    return returnTracks;
+  }
+  
+  return returnTracks.slice(0, returnTracks.length - 1)
 }
 
 const getSeedTracks = (token, miles) => {
@@ -84,3 +75,4 @@ const getRecommendation = (token, genre, tempo) => {
     }
   )
 }
+

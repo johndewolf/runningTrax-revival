@@ -11,6 +11,12 @@ const Build = () => {
     }
     else {
       getPlaylistData(state.token, state.miles)
+        .then((data) => {
+          dispatch({
+            type: 'ADD_PLAYLIST',
+            payload: data 
+          })
+        })
     }
   }, [])
 
@@ -25,8 +31,6 @@ const Build = () => {
           <Sidebar />
         </Col>
         <Col xs={24} md={8}>
-
-
         </Col>
         <Col xs={24} md={12}>
         </Col>

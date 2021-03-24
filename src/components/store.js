@@ -5,6 +5,7 @@ const initialState = {
     editingMile: 0,
     token: null,
     username: null,
+    playlist: []
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +32,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         username: action.payload
+      }
+    case 'ADD_PLAYLIST' :
+      return {
+        ...state,
+        playlist: action.payload
       }
     default:
       throw new Error(`Unknown action: ${action.type}`)

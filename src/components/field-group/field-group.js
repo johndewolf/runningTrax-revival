@@ -48,7 +48,6 @@ const FieldGroup = () => {
 
     if (state.editingMile <= state.miles.length) {
       dispatch({type: 'UPDATE_MILE', payload: {index: state.editingMile, values : {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}}});
-      
     }
     else {
       dispatch({type: 'ADD_MILE', payload: {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}});
@@ -65,7 +64,7 @@ const FieldGroup = () => {
   }
 
   return(
-    <Form className="field-group" form={form} >
+    <Form className="field-group dropshadow bg-white" form={form} >
 
       <legend>Genre</legend>
       <Form.Item className="field-group-input" name="genre">
@@ -81,27 +80,28 @@ const FieldGroup = () => {
       </Form.Item>
       <div className="field-group-input time-input">
         <legend>Duration</legend>
-        <Form.Item name="minutes">
+        <Form.Item name="minutes" label="Minutes">
             <InputNumber
-            initialvalues={8}
             min={4}
             max={59}
-            formatter={value => `${value} min`}
-            parser={value => value.replace(' %', '')}
+            onChange={checkIfValid}
           />
         </Form.Item>
-        <Form.Item name="seconds">
+        <Form.Item name="seconds" label="Seconds">
           <InputNumber
-            initialvalues={0}
             min={0}
             max={59}
-            formatter={value => {
-                if (value < 10) {
-                  return `0${value} sec`;
-                }
-                return `${value} sec`;
+
+            formatter={(value) => {
+              if (!value) {
+                return ``
+              }
+              if (value < 10) {
+                return `0${value}`
+              }
+              return value;
             }}
-            parser={value => value.replace(' %', '')}
+            onChange={checkIfValid}
           />
         </Form.Item>
       </div>

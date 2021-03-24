@@ -48,7 +48,7 @@ const Build = () => {
         )
       )}
 
-      <Row gutter={24}>
+      <Row gutter={ 32 }>
         <Col xs={24} md={4}>
           <h3>Miles</h3>
           <Sidebar />
@@ -62,7 +62,7 @@ const Build = () => {
         </Col>
       </Row>
       <div style={{marginTop: '3rem'}}>
-        <Button onClick={() => {history.push("/result")}} type="primary" disabled={ state.miles.length === 0 ? 'true' : false}>Generate Playlist</Button>
+        <Button onClick={() => {history.push("/result")}} type="primary" disabled={ state.miles.length === 0 ? true : false}>Generate Playlist</Button>
       </div>
     </div>
   );

@@ -1,7 +1,20 @@
 @import '~antd/dist/antd.css';
-.site-layout .site-layout-background {
-  background: #fff;
-}
+
 [data-theme="dark"] .site-layout .site-layout-background {
   background: #141414;
+}
+
+.dropshadow {
+  box-shadow: rgb(16 7 104 / 8%) 0px 1px 6px 0px;
+  padding: 16px;
+}
+
+.bg-white {
+  background-color: white;
+  border-radius: 4px;
+}
+
+.ant-form legend {
+  border-bottom: none;
+  margin-bottom: 0.5rem;
 }

@@ -9,5 +9,17 @@
 }
 
 .field-group-input.time-input .ant-form-item {
-  margin-right: 1rem;
+  margin-right: 0.5rem;
+}
+
+.field-group-input.time-input .ant-col.ant-form-item-label {
+  order: 2;
+  margin-left: 0.5rem;
+}
+.field-group-input.time-input .ant-form-item-label label {
+  font-size: 12px;
+}
+
+.field-group-input.time-input .ant-form-item-label label:after {
+  display: none;
 }
