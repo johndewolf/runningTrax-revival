@@ -18,6 +18,12 @@ const reducer = (state, action) => {
       let newState = {...state};
         newState.miles[action.payload.index] =  action.payload.values;
         return newState;  
+    case 'DELETE_MILE':
+      return {
+        ...state,
+        miles: state.miles.filter((mile, index) => action.payload !== index),
+        editingMile: state.miles.length ? state.miles.length - 1 : 0
+      }
     case 'UPDATE_CURRENT_MILE':
       return {
         ...state,

@@ -48,13 +48,12 @@ const Build = () => {
         )
       )}
 
-      <Row gutter={ 32 }>
+      <Row gutter={ 64 }>
         <Col xs={24} md={4}>
           <h3>Miles</h3>
           <Sidebar />
         </Col>
         <Col xs={24} md={8}>
-          <h3>Add a Mile</h3>
           <FieldGroup />
         </Col>
         <Col xs={24} md={12}>

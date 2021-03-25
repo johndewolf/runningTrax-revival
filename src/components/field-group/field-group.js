@@ -1,9 +1,9 @@
 import {useState, useEffect, useContext} from 'react';
 import { Form, Select, InputNumber, Slider, Button } from 'antd';
-import { PlusCircleOutlined } from '@ant-design/icons';
 import { Context } from '../store'
 import { formatMinutes, formatSeconds } from '../../utility'
 import { getGenreSeeds } from '../../api/spotify'
+import FieldGroupFooter from '../field-group-footer/field-group-footer'
 import './field-group.css';
 const { Option } = Select;
 
@@ -24,16 +24,19 @@ const FieldGroup = () => {
   }
   const mile = state.miles[state.editingMile]
   useEffect(() => {
-    if (typeof state.miles[state.editingMile] != 'undefined') {
+    if (state.editingMile >= state.miles.length) {
+      console.log('reseting fields');
+      form.resetFields();
+      setValidity(false);
+    }
+    else if (typeof state.miles[state.editingMile] != 'undefined') {
       form.setFieldsValue({
         genre: mile.genre,
         tempo: mile.tempo,
         minutes: formatMinutes(mile.duration),
         seconds: formatSeconds(mile.duration)
       })
-      setValidity(true);
     }
-    
   }, [state.editingMile, state.miles])
   useEffect(() => {
     if (state.token) {
@@ -56,11 +59,16 @@ const FieldGroup = () => {
     setValidity(false);
     form.resetFields();
   }
+  const handleCopyClick = () => {
+    console.log('firing copy');
+    let seconds = form.getFieldValue('seconds') ? form.getFieldValue('seconds') : 0;
+    let durationInSeconds = (form.getFieldValue('minutes') * 60) + seconds;
+    dispatch({type: 'ADD_MILE', payload: {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}});
+  }
 
-  const handleCancelClick = () => {
-    dispatch({type: 'UPDATE_CURRENT_MILE', payload: state.miles.length });
-    setValidity(false);
-    form.resetFields();
+  const handleDeleteClick = () => {
+    console.log('firing delete');
+    dispatch({type: 'DELETE_MILE', payload: state.editingMile});
   }
 
   return(
@@ -109,8 +117,10 @@ const FieldGroup = () => {
       <Form.Item className="field-group-input" name="tempo" >
         <Slider min={120} max={220} onAfterChange={checkIfValid} />
       </Form.Item>
-      <Button disabled={valid ? false : true} onClick={handleAddMile}>{state.editingMile < state.miles.length ? "Update" : "Add"} Mile <PlusCircleOutlined /></Button>
-      {state.editingMile < state.miles.length ? <Button type="text" onClick={handleCancelClick}>Cancel</Button> : null}
+      <Button disabled={valid ? false : true} onClick={handleAddMile}>{state.editingMile < state.miles.length ? "Update" : "Add"} Mile</Button>
+      {state.editingMile < state.miles.length &&
+        <FieldGroupFooter onCopyClick={handleCopyClick} onDeleteClick={handleDeleteClick} />
+      }
     </Form>
   )
 }
