@@ -31,7 +31,7 @@ const Build = () => {
   return (
 
     <div>
-      <h1>Build your playlist</h1>
+
       {!state.token && (
         (
           <Modal 
@@ -43,26 +43,25 @@ const Build = () => {
           okText="Login"
           onOk={handleOkClick}
         >
-          <p>In order to continue, login with your Spotify account. Click the button below to continue</p>
+          <p>In order to continue, login with your Spotify account.</p>
         </Modal>
         )
       )}
-
-      <Row gutter={ 64 }>
-        <Col xs={24} md={4}>
-          <h3>Miles</h3>
-          <Sidebar />
-        </Col>
-        <Col xs={24} md={8}>
+      <h1>Build a Playlist</h1>
+      <Row gutter={ 32 }>
+        <Col xs={24} lg={8}>
           <FieldGroup />
+          <div style={{marginTop: '2rem'}}>
+            <Button onClick={() => {history.push("/result")}} type="primary" disabled={ state.miles.length === 0 ? true : false}>Generate Playlist</Button>
+          </div>
         </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} lg={12}>
           <Chart />
         </Col>
+        <Col xs={24} lg={3}>
+          <Sidebar />
+        </Col>
       </Row>
-      <div style={{marginTop: '3rem'}}>
-        <Button onClick={() => {history.push("/result")}} type="primary" disabled={ state.miles.length === 0 ? true : false}>Generate Playlist</Button>
-      </div>
     </div>
   );
 }

@@ -117,7 +117,7 @@ const FieldGroup = () => {
       <Form.Item className="field-group-input" name="tempo" >
         <Slider min={120} max={220} onAfterChange={checkIfValid} />
       </Form.Item>
-      <Button disabled={valid ? false : true} onClick={handleAddMile}>{state.editingMile < state.miles.length ? "Update" : "Add"} Mile</Button>
+      <Button disabled={valid ? false : true} onClick={handleAddMile}>{state.editingMile < state.miles.length ? "Update" : "Add"} Set</Button>
       {state.editingMile < state.miles.length &&
         <FieldGroupFooter onCopyClick={handleCopyClick} onDeleteClick={handleDeleteClick} />
       }

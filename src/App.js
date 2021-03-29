@@ -22,8 +22,8 @@ const App = () => {
         <Router>
           <Layout>
           <AppHeader />
-          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, marginBottom: 64 }}>
-          <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, height:  'calc(100vh - 64px)' }}>
+          <div className="site-layout-background" style={{ padding: 24 }}>
             <Switch>
               <Route path="/build" component={Build} />
               <Route path="/result" component={Result} />

@@ -8,11 +8,19 @@ export const formatSeconds = (time) => {
 }
 export const formatTimeString = (time) => {
   let minutes = Math.floor(time / 60);
-  let seconds = time - minutes * 60;
+  let seconds = Number(time - minutes * 60).toFixed(0);
   if (seconds < 10) {
     seconds = `0${seconds}`
   }
+  if (seconds === 60) {
+    seconds = '00'
+    minutes += 1;
+  }
   return `${minutes}:${seconds}`;
+}
+
+export const formatArtistName = (artistArr) => {
+  return artistArr.map((artist) => artist.name).join(', ')
 }
 
 export const getHash = () => {

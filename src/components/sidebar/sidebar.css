@@ -1,0 +1,24 @@
+.miles-sidebar {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ant-timeline-item-content {
+  cursor: pointer;
+}
+
+.shadow-transition {
+  transition: all 250ms ease-in-out;
+  background-color: transparent;
+  box-shadow: none;
+  overflow: scroll;
+  max-height: calc(100vh - 162px);
+}
+
+.shadow-transition.shadow-transition-in {
+  transition: all 250ms ease-in-out;
+  background-color: white;
+  box-shadow: rgb(16 7 104 / 8%) 0px 1px 6px 0px;
+  padding: 16px;
+  border-radius: 4px;
+}
