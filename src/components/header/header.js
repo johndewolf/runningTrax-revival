@@ -6,16 +6,19 @@ import {
 import { UserOutlined } from '@ant-design/icons';
 import { Context } from '../../components/store'
 import { getProfileName } from '../../api/spotify'
+import { useSelector, useDispatch } from 'react-redux'
+import { addUserName } from '../../slices/profile'
 const { Header } = Layout;
 const AppHeader = () => {
   const [state, dispatch] = useContext(Context);
-
+  const username = useSelector(state => state.profile.username)
+  const reduxDispatch = useDispatch()
   useEffect(() => {
     if (state.token) {
       console.log('sending username request');
       getProfileName(state.token)
         .then(response => {
-          dispatch({type: 'UPDATE_USERNAME', payload: response.data.display_name})
+          reduxDispatch(addUserName(response.data.display_name));
         })
         .catch(error => {
           console.log(error);
@@ -30,7 +33,7 @@ const AppHeader = () => {
     <Menu theme="dark" mode="horizontal">
       <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
       <Menu.Item key="2"><Link to="/build">Build</Link></Menu.Item>     
-      {state.username ? <Menu.Item key="3"><UserOutlined /> {state.username}</Menu.Item> : null}
+      {username ? <Menu.Item key="3"><UserOutlined /> {username}</Menu.Item> : null}
     </Menu>
     
   </Header>
