@@ -6,20 +6,21 @@ import {
 import FieldGroup from '../../components/field-group/field-group'
 import Sidebar from '../../components/sidebar/sidebar'
 import Chart from '../../components/chart/chart'
-import { Context } from '../../components/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateToken } from '../../slices/profile'
 import { authEndpoint, clientId, redirectUri, scopes } from '../../utility/constants'
 import { getHash } from '../../utility/'
 const Build = () => {
-  const [state, dispatch] = useContext(Context);
+  const token = useSelector(state => state.profile.token)
+  const dispatch = useDispatch()
   useEffect(() => {
     if (window.localStorage.getItem('spotify_token')) {
-      dispatch({type: 'ADD_TOKEN', payload: window.localStorage.getItem('spotify_token')});
+      dispatch(updateToken( window.localStorage.getItem('spotify_token') ))
     }
     let hash = getHash();
     if (hash.access_token) {
       window.localStorage.setItem('spotify_token', hash.access_token);
-
-      dispatch({type: 'ADD_TOKEN', payload: hash.access_token});
+      dispatch(updateToken( hash.access_token ))
       window.location.hash = '';
     }
     
@@ -32,7 +33,7 @@ const Build = () => {
 
     <div>
 
-      {!state.token && (
+      {!token && (
         (
           <Modal 
           visible={true}
@@ -52,7 +53,7 @@ const Build = () => {
         <Col xs={24} lg={8}>
           <FieldGroup />
           <div style={{marginTop: '2rem'}}>
-            <Button onClick={() => {history.push("/result")}} type="primary" disabled={ state.miles.length === 0 ? true : false}>Generate Playlist</Button>
+            {/* <Button onClick={() => {history.push("/result")}} type="primary" disabled={ miles.length === 0 ? true : false}>Generate Playlist</Button> */}
           </div>
         </Col>
         <Col xs={24} lg={12}>
