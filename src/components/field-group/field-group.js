@@ -1,6 +1,8 @@
 import {useState, useEffect, useContext} from 'react';
 import { Form, Select, InputNumber, Slider, Button } from 'antd';
 import { Context } from '../store'
+import { addSet } from '../../reducers/sets'
+import { useSelector, useDispatch } from 'react-redux'
 import { formatMinutes, formatSeconds } from '../../utility'
 import { getGenreSeeds } from '../../api/spotify'
 import FieldGroupFooter from '../field-group-footer/field-group-footer'
@@ -9,6 +11,7 @@ const { Option } = Select;
 
 const FieldGroup = () => {
   const [state, dispatch] = useContext(Context);
+
   const [form] = Form.useForm();
   const [valid, setValidity] = useState(false);
   const [genres, setGenres] = useState(['rock', 'rap', 'jazz'])

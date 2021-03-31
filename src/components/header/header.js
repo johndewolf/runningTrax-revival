@@ -5,17 +5,26 @@ import {
 } from "react-router-dom";
 import { UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchUsernameByToken } from '../../slices/profile'
+import { fetchUsernameByToken, updateToken } from '../../reducers/profile'
 const { Header } = Layout;
 const AppHeader = () => {
   const token = useSelector(state => state.profile.token)
   const username = useSelector(state => state.profile.username)
+  const error = useSelector(state => state.profile.error)
   const dispatch = useDispatch()
   useEffect(() => {
-    if (token) {
+    if (token !== null) {
       dispatch(fetchUsernameByToken(token))
     }
   }, [token])
+
+  useEffect(() => {
+    if ( error ) {
+      window.localStorage.removeItem('spotify_token');
+      dispatch(updateToken( null ))
+    }
+  }, [error])
+  
   return (
   <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
     <div className="logo" />

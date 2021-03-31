@@ -14,7 +14,8 @@ export const profileSlice = createSlice({
   name: 'profile',
   initialState: {
     username: null,
-    token: null
+    token: null,
+    error: null
   },
   reducers: {
     updateUsername: (state, action) => {
@@ -26,8 +27,14 @@ export const profileSlice = createSlice({
   },
   extraReducers: {
     [fetchUsernameByToken.fulfilled]: (state, action) => {
+      console.log("FULFILLED");
       state.username = action.payload.display_name
-    }
+    },
+    [fetchUsernameByToken.rejected]: (state) => {
+      console.log("REJECTED");
+      state.error = true;
+    },
+
   }
 })
 

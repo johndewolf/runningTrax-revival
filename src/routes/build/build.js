@@ -7,15 +7,23 @@ import FieldGroup from '../../components/field-group/field-group'
 import Sidebar from '../../components/sidebar/sidebar'
 import Chart from '../../components/chart/chart'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateToken } from '../../slices/profile'
+import { updateToken } from '../../reducers/profile'
 import { authEndpoint, clientId, redirectUri, scopes } from '../../utility/constants'
 import { getHash } from '../../utility/'
 const Build = () => {
   const token = useSelector(state => state.profile.token)
   const dispatch = useDispatch()
   useEffect(() => {
+
     if (window.localStorage.getItem('spotify_token')) {
-      dispatch(updateToken( window.localStorage.getItem('spotify_token') ))
+      try {
+        dispatch(updateToken( window.localStorage.getItem('spotify_token') ))
+      }
+      catch {
+        console.log('caught');
+        window.localStorage.removeItem('spotify_token')
+      }
+      
     }
     let hash = getHash();
     if (hash.access_token) {
@@ -24,7 +32,7 @@ const Build = () => {
       window.location.hash = '';
     }
     
-  }, [])
+  }, [token])
   const handleOkClick = () => {
     window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`;
   }
