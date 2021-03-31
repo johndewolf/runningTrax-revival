@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Menu, Layout } from 'antd';
 import {
   Link
@@ -16,15 +16,15 @@ const AppHeader = () => {
     if (token !== null) {
       dispatch(fetchUsernameByToken(token))
     }
-  }, [token])
+  }, [token, dispatch])
 
   useEffect(() => {
     if ( error ) {
       window.localStorage.removeItem('spotify_token');
       dispatch(updateToken( null ))
     }
-  }, [error])
-  
+  }, [error, dispatch])
+
   return (
   <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
     <div className="logo" />

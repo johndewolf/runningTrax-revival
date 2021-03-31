@@ -1,17 +1,18 @@
-import { React, useContext, useEffect } from "react";
+import { React, useEffect } from "react";
 import { Row, Col, Button, Modal } from 'antd';
 import {
   useHistory
 } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
 import FieldGroup from '../../components/field-group/field-group'
 import Sidebar from '../../components/sidebar/sidebar'
 import Chart from '../../components/chart/chart'
-import { useSelector, useDispatch } from 'react-redux'
 import { updateToken } from '../../reducers/profile'
 import { authEndpoint, clientId, redirectUri, scopes } from '../../utility/constants'
 import { getHash } from '../../utility/'
 const Build = () => {
   const token = useSelector(state => state.profile.token)
+  const sets = useSelector(state => state.sets.list)
   const dispatch = useDispatch()
   useEffect(() => {
 
@@ -20,7 +21,6 @@ const Build = () => {
         dispatch(updateToken( window.localStorage.getItem('spotify_token') ))
       }
       catch {
-        console.log('caught');
         window.localStorage.removeItem('spotify_token')
       }
       
@@ -32,7 +32,7 @@ const Build = () => {
       window.location.hash = '';
     }
     
-  }, [token])
+  }, [token, dispatch])
   const handleOkClick = () => {
     window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`;
   }
@@ -61,7 +61,7 @@ const Build = () => {
         <Col xs={24} lg={8}>
           <FieldGroup />
           <div style={{marginTop: '2rem'}}>
-            {/* <Button onClick={() => {history.push("/result")}} type="primary" disabled={ miles.length === 0 ? true : false}>Generate Playlist</Button> */}
+            <Button onClick={() => {history.push("/result")}} type="primary" disabled={ sets.length === 0 ? true : false}>Generate Playlist</Button>
           </div>
         </Col>
         <Col xs={24} lg={12}>

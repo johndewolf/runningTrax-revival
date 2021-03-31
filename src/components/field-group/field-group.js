@@ -1,7 +1,6 @@
-import {useState, useEffect, useContext} from 'react';
+import {useState, useEffect} from 'react';
 import { Form, Select, InputNumber, Slider, Button } from 'antd';
-import { Context } from '../store'
-import { addSet } from '../../reducers/sets'
+import { addSet, updateSet, deleteSet } from '../../reducers/sets'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatMinutes, formatSeconds } from '../../utility'
 import { getGenreSeeds } from '../../api/spotify'
@@ -10,13 +9,15 @@ import './field-group.css';
 const { Option } = Select;
 
 const FieldGroup = () => {
-  const [state, dispatch] = useContext(Context);
-
+  const token = useSelector(state => state.profile.token)
+  const sets = useSelector(state => state.sets.list)
+  const editingSet = useSelector(state => state.sets.editingSet)
   const [form] = Form.useForm();
   const [valid, setValidity] = useState(false);
+  const dispatch = useDispatch()
   const [genres, setGenres] = useState(['rock', 'rap', 'jazz'])
+  
   const checkIfValid = () => {
-    //redo this;
     if (
       form.getFieldValue('genre') &&
       form.getFieldValue('tempo') &&
@@ -25,40 +26,61 @@ const FieldGroup = () => {
       setValidity(true);
     }
   }
-  const mile = state.miles[state.editingMile]
+  
   useEffect(() => {
-    if (state.editingMile >= state.miles.length) {
-      console.log('reseting fields');
+    if (editingSet >= sets.length) {
       form.resetFields();
       setValidity(false);
     }
-    else if (typeof state.miles[state.editingMile] != 'undefined') {
+    else if (typeof sets[editingSet] != 'undefined') {
+      const set = sets[editingSet]
       form.setFieldsValue({
-        genre: mile.genre,
-        tempo: mile.tempo,
-        minutes: formatMinutes(mile.duration),
-        seconds: formatSeconds(mile.duration)
+        genre: set.genre,
+        tempo: set.tempo,
+        minutes: formatMinutes(set.duration),
+        seconds: formatSeconds(set.duration)
       })
     }
-  }, [state.editingMile, state.miles])
+  }, [editingSet, sets, form])
+
   useEffect(() => {
-    if (state.token) {
-      getGenreSeeds(state.token)
+    if (token) {
+      getGenreSeeds(token)
         .then(result => setGenres(result.data.genres))
         .catch(error => console.log(error))
     }
-  }, [state.token])
+  }, [token])
+
   const handleAddMile = () => {
     let seconds = form.getFieldValue('seconds') ? form.getFieldValue('seconds') : 0;
     let durationInSeconds = (form.getFieldValue('minutes') * 60) + seconds;
 
-    if (state.editingMile <= state.miles.length) {
-      dispatch({type: 'UPDATE_MILE', payload: {index: state.editingMile, values : {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}}});
+    if (editingSet <= sets.length) {
+      dispatch(updateSet(
+        {
+          index: editingSet,
+          fieldValues: {
+            genre: form.getFieldValue('genre'),
+            tempo: form.getFieldValue('tempo'),
+            duration: durationInSeconds,
+            editing: false
+          },
+          
+        }
+      ))
     }
     else {
-      dispatch({type: 'ADD_MILE', payload: {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}});
+      console.log('add');
+      dispatch(addSet(
+        {
+          genre: form.getFieldValue('genre'),
+          tempo: form.getFieldValue('tempo'),
+          duration: durationInSeconds,
+          editing: false
+        }
+      ))
     }
-    dispatch({type: 'UPDATE_CURRENT_MILE', payload: state.miles.length });
+
     setValidity(false);
     form.resetFields();
   }
@@ -66,17 +88,22 @@ const FieldGroup = () => {
     console.log('firing copy');
     let seconds = form.getFieldValue('seconds') ? form.getFieldValue('seconds') : 0;
     let durationInSeconds = (form.getFieldValue('minutes') * 60) + seconds;
-    dispatch({type: 'ADD_MILE', payload: {genre: form.getFieldValue('genre'), tempo: form.getFieldValue('tempo'), duration: durationInSeconds}});
+    dispatch(addSet(
+      {
+        genre: form.getFieldValue('genre'),
+        tempo: form.getFieldValue('tempo'),
+        duration: durationInSeconds,
+        editing: false
+      }
+    ))
   }
 
   const handleDeleteClick = () => {
-    console.log('firing delete');
-    dispatch({type: 'DELETE_MILE', payload: state.editingMile});
+    dispatch(deleteSet(editingSet));
   }
 
   return(
     <Form className="field-group dropshadow bg-white" form={form} >
-
       <legend>Genre</legend>
       <Form.Item className="field-group-input" name="genre">
         <Select
@@ -120,8 +147,8 @@ const FieldGroup = () => {
       <Form.Item className="field-group-input" name="tempo" >
         <Slider min={120} max={220} onAfterChange={checkIfValid} />
       </Form.Item>
-      <Button disabled={valid ? false : true} onClick={handleAddMile}>{state.editingMile < state.miles.length ? "Update" : "Add"} Set</Button>
-      {state.editingMile < state.miles.length &&
+      <Button disabled={valid ? false : true} onClick={handleAddMile}>{editingSet < sets.length ? "Update" : "Add"} Set</Button>
+      {editingSet < sets.length &&
         <FieldGroupFooter onCopyClick={handleCopyClick} onDeleteClick={handleDeleteClick} />
       }
     </Form>
