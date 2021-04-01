@@ -1,9 +1,9 @@
-import { useContext } from 'react'
 import { Line } from '@ant-design/charts';
-import { Context } from '../store'
+import { useSelector } from 'react-redux'
+  
 const Chart = () => {
-  const [ state ] = useContext(Context);
-  const data = state.miles.map((mile, index) => {
+  const sets = useSelector(state => state.sets.list)
+  const data = sets.map((mile, index) => {
     return { mile: index, tempo: mile.tempo, genre: mile.genre, duration: (mile.duration) }
   })
   const config = {
