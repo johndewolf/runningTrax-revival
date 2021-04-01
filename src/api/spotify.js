@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 export const getGenreSeeds = (token) => {
   return axios.get('  https://api.spotify.com/v1/recommendations/available-genre-seeds',
     {headers: {"Authorization": `Bearer ${token}`}

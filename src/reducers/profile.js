@@ -18,9 +18,6 @@ export const profileSlice = createSlice({
     error: null
   },
   reducers: {
-    updateUsername: (state, action) => {
-      state.username = action.payload
-    },
     updateToken: (state, action) => {
       state.token = action.payload
     },
@@ -39,6 +36,6 @@ export const profileSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updateUsername, updateToken } = profileSlice.actions
+export const { updateToken } = profileSlice.actions
 
 export default profileSlice.reducer

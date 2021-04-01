@@ -1,25 +1,23 @@
-import { React, useContext, useEffect } from "react";
-import { Row, Col, Button, Modal, message } from 'antd';
+import { React, useEffect } from "react";
+import { Row, Col, message } from 'antd';
 import Sidebar from '../../components/sidebar/sidebar'
-import { Context } from '../../components/store'
-import { getPlaylistData } from '../../api/spotify'
+import { fetchPlaylistData } from '../../reducers/playlist'
+import { useSelector, useDispatch } from 'react-redux'
+
 import { formatTimeString, formatArtistName } from '../../utility/index'
-const Build = () => {
-  const [state, dispatch] = useContext(Context);
+const Result = () => {
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.profile.token)
+  const sets = useSelector(state => state.sets.list)
+  const playlist = useSelector(state => state.playlist.playlist)
   useEffect(() => {
-    if (state.miles.length === 0) {
+    if (sets.length === 0) {
       message.error('No data to build playlist!');
     }
     else {
-      getPlaylistData(state.token, state.miles)
-        .then((data) => {
-          dispatch({
-            type: 'ADD_PLAYLIST',
-            payload: data 
-          })
-        })
+      dispatch(fetchPlaylistData({sets: sets, token: token}))
     }
-  }, [])
+  }, [sets, token, dispatch])
 
   return (
 
@@ -27,25 +25,19 @@ const Build = () => {
       <h1>Your Playlist</h1>
 
       <Row gutter={24}>
-        <Col xs={24} md={8}>
-        </Col>
         <Col xs={24} md={12}>
-          {state.playlist.length > 0 &&
-            state.playlist.map((mileGroup, mileIndex) => {
+          {playlist.length > 0 && 
+            playlist.map((setGroup, setIndex) => {
               return (
-              <div key={`result-mile-${mileIndex}`}>
-                <div>{state.miles[mileIndex].genre} - {state.miles[mileIndex].tempo} - {formatTimeString(state.miles[mileIndex].duration)}</div>
-                {mileGroup.map((track, trackIndex) => {
-                  return (
-                    <div key={`tr-${track.id}`}>
-                      {trackIndex + 1}. {formatArtistName(track.artists)} - {track.name} {formatTimeString(track.duration_ms / 1000)}
-                    </div>
-                  )
-                })}
+              <div>
+              {setIndex + 1} - {sets[setIndex].genre} - {formatTimeString(sets[setIndex].duration)}
+              <div style={{marginBottom: '1rem'}} key={`set-${setIndex}`}>
+              {setGroup.map((track, trackIndex) => {
+                return <div key={`track-${trackIndex}`}>{formatArtistName(track.artists)} - {track.name} - {formatTimeString(track.duration_ms / 1000)}</div>
+              })}
               </div>
-              )
-            })
-          
+              </div> 
+            )})
           }
         </Col>
         <Col xs={24} md={4}>
@@ -57,4 +49,4 @@ const Build = () => {
   );
 }
 
-export default Build
+export default Result
