@@ -70,7 +70,6 @@ const FieldGroup = () => {
       ))
     }
     else {
-      console.log('add');
       dispatch(addSet(
         {
           genre: form.getFieldValue('genre'),
@@ -85,7 +84,6 @@ const FieldGroup = () => {
     form.resetFields();
   }
   const handleCopyClick = () => {
-    console.log('firing copy');
     let seconds = form.getFieldValue('seconds') ? form.getFieldValue('seconds') : 0;
     let durationInSeconds = (form.getFieldValue('minutes') * 60) + seconds;
     dispatch(addSet(

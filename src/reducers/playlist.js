@@ -61,13 +61,33 @@ export const fetchPlaylistData = createAsyncThunk(
     const response = await getSeedTracks(token, sets);
     return response;
   }
+)
 
+export const exportPlaylist = createAsyncThunk(
+  'playlist/exportPlaylist',
+  async (data, thunkAPI) => {
+    return axios.post(`https://api.spotify.com/v1/users/${data.user_id}`,
+    {
+    data: {
+      name: 'Running Trax Playlist',
+      description: 'dope ass playlist'
+    }},
+    {
+      headers: {
+        "Authorization": `Bearer ${data.token}`
+      },
+    }
+  )
+  }
 )
 export const playlistSlice = createSlice({
   name: 'playlist',
   initialState: {
     playlist: [],
-    inProgress: true
+    inProgress: true,
+    exported: false
+  },
+  reducers: {
   },
   extraReducers: {
     [fetchPlaylistData.fulfilled]: (state, action) => {
@@ -81,7 +101,13 @@ export const playlistSlice = createSlice({
     [fetchPlaylistData.pending]: (state) => {
       state.inProgress = true;
     },
-
+    [exportPlaylist.fulfilled]: (state, action) => {
+      state.exported = true;
+    },
+    [exportPlaylist.rejected]: (state, action) => {
+      state.seedData = [];
+      state.exported = false;
+    },
   }
 })
 

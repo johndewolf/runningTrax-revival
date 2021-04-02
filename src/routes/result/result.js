@@ -1,24 +1,28 @@
 import { React, useEffect } from "react";
 import { Row, Col, message } from 'antd';
-import Sidebar from '../../components/sidebar/sidebar'
-import { fetchPlaylistData } from '../../reducers/playlist'
+import Playlist from '../../components/playlist/playlist'
+import { fetchPlaylistData, exportPlaylist } from '../../reducers/playlist'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { formatTimeString, formatArtistName } from '../../utility/index'
 const Result = () => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.profile.token)
+  const user_id = useSelector(state => state.profile.user_id)
   const sets = useSelector(state => state.sets.list)
   const playlist = useSelector(state => state.playlist.playlist)
+  const inProgress = useSelector(state => state.playlist.inProgress)
   useEffect(() => {
     if (sets.length === 0) {
       message.error('No data to build playlist!');
     }
     else {
+      console.log('fetching playlist data');
       dispatch(fetchPlaylistData({sets: sets, token: token}))
     }
-  }, [sets, token, dispatch])
-
+  }, [])
+  const handleExportClick = () => {
+    dispatch(exportPlaylist({token: token, user_id: user_id}))
+  }
   return (
 
     <div>
@@ -26,23 +30,14 @@ const Result = () => {
 
       <Row gutter={24}>
         <Col xs={24} md={12}>
-          {playlist.length > 0 && 
-            playlist.map((setGroup, setIndex) => {
-              return (
-              <div>
-              {setIndex + 1} - {sets[setIndex].genre} - {formatTimeString(sets[setIndex].duration)}
-              <div style={{marginBottom: '1rem'}} key={`set-${setIndex}`}>
-              {setGroup.map((track, trackIndex) => {
-                return <div key={`track-${trackIndex}`}>{formatArtistName(track.artists)} - {track.name} - {formatTimeString(track.duration_ms / 1000)}</div>
-              })}
-              </div>
-              </div> 
-            )})
+          {inProgress && 
+            <div>Loading</div>
+          }
+          {!inProgress && playlist.length > 0 && 
+            <Playlist playlist={playlist} />
           }
         </Col>
-        <Col xs={24} md={4}>
-          <h3>Miles</h3>
-          <Sidebar />
+        <Col xs={24} md={6}>
         </Col>
       </Row>
     </div>

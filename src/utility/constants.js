@@ -4,4 +4,6 @@ export const redirectUri = "http://localhost:3000/build";
 export const scopes = [
   "user-read-currently-playing",
   "user-read-playback-state",
+  "playlist-modify-public",
+  "playlist-modify-private"
 ];
