@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import { Form, Select, InputNumber, Slider, Button } from 'antd';
-import { addSet, updateSet, deleteSet } from '../../reducers/sets'
+import { addSet, updateSet, deleteSet, updateEditingSet } from '../../reducers/sets'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatMinutes, formatSeconds } from '../../utility'
 import { getGenreSeeds } from '../../api/spotify'
@@ -97,6 +97,9 @@ const FieldGroup = () => {
       }
     ))
   }
+  const handleUndoClick = () => {
+    dispatch(updateEditingSet(sets.length));
+  }
 
   const handleDeleteClick = () => {
     dispatch(deleteSet(editingSet));
@@ -149,7 +152,7 @@ const FieldGroup = () => {
       </Form.Item>
       <Button disabled={valid ? false : true} onClick={handleAddMile}>{editingSet < sets.length ? "Update" : "Add"} Set</Button>
       {editingSet < sets.length &&
-        <FieldGroupFooter onCopyClick={handleCopyClick} onDeleteClick={handleDeleteClick} />
+        <FieldGroupFooter onCopyClick={handleCopyClick} onDeleteClick={handleDeleteClick} onUndoClick={handleUndoClick} />
       }
     </Form>
   )

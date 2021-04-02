@@ -24,7 +24,6 @@ export const profileSlice = createSlice({
   },
   extraReducers: {
     [fetchUsernameByToken.fulfilled]: (state, action) => {
-      console.log("FULFILLED");
       state.username = action.payload.display_name
     },
     [fetchUsernameByToken.rejected]: (state) => {
