@@ -1,13 +1,12 @@
 import { React, useEffect } from "react";
 import { Row, Col, message, Skeleton } from 'antd';
 import Playlist from '../../components/playlist/playlist'
-import { fetchPlaylistData, exportPlaylist } from '../../reducers/playlist'
+import { fetchPlaylistData } from '../../reducers/playlist'
 import { useSelector, useDispatch } from 'react-redux'
 
 const Result = () => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.profile.token)
-  const user_id = useSelector(state => state.profile.user_id)
   const sets = useSelector(state => state.sets.list)
   const playlist = useSelector(state => state.playlist.playlist)
   const inProgress = useSelector(state => state.playlist.inProgress)
@@ -19,10 +18,7 @@ const Result = () => {
       console.log('fetching playlist data');
       dispatch(fetchPlaylistData({sets: sets, token: token}))
     }
-  }, [])
-  const handleExportClick = () => {
-    dispatch(exportPlaylist({token: token, user_id: user_id}))
-  }
+  }, [dispatch, sets, token])
   return (
 
     <div>
