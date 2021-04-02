@@ -1,5 +1,5 @@
 import { React, useEffect } from "react";
-import { Row, Col, message } from 'antd';
+import { Row, Col, message, Skeleton } from 'antd';
 import Playlist from '../../components/playlist/playlist'
 import { fetchPlaylistData, exportPlaylist } from '../../reducers/playlist'
 import { useSelector, useDispatch } from 'react-redux'
@@ -31,9 +31,9 @@ const Result = () => {
       <Row gutter={24}>
         <Col xs={24} md={12}>
           {inProgress && 
-            <div>Loading</div>
+            <Skeleton active />
           }
-          {!inProgress && playlist.length > 0 && 
+          {!inProgress && 
             <Playlist playlist={playlist} />
           }
         </Col>
