@@ -1,8 +1,8 @@
 import { updateEditingSet } from '../../reducers/sets'
 import { useSelector, useDispatch } from 'react-redux'
 import { Timeline } from 'antd';
-
 import './sidebar.css'
+
 const SideBar = () => {
   const sets = useSelector(state => state.sets.list)
   const editingSet = useSelector(state => state.sets.editingSet)

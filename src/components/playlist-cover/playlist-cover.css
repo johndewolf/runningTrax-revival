@@ -1,0 +1,26 @@
+.playlist-cover {
+  max-width: 200px;
+  display: flex;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-wrap: wrap;
+  max-height: 200px;
+}
+
+.playlist-cover .playlist-image {
+  width: 50%;
+}
+
+.playlist-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.playlist-cover.playlist-size-3 .playlist-image-2 {
+  width: 100%;
+}
+
+.playlist-cover.playlist-size-1 .playlist-image {
+  width: 100%;
+}

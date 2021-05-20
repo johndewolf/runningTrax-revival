@@ -15,7 +15,6 @@ import Result from './routes/result/result'
 import './App.css';
 const { Content } = Layout;
 const App = () => {
-
   return (
   <Router>
     <Layout>

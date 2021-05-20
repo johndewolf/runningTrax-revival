@@ -1,6 +1,7 @@
 import { React, useEffect } from "react";
 import { Row, Col, message, Skeleton } from 'antd';
 import Playlist from '../../components/playlist/playlist'
+import PlaylistCover from '../../components/playlist-cover/playlist-cover'
 import { fetchPlaylistData } from '../../reducers/playlist'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -33,7 +34,10 @@ const Result = () => {
             <Playlist playlist={playlist} />
           }
         </Col>
-        <Col xs={24} md={6}>
+        <Col xs={24} md={12}>
+          {!inProgress && 
+            <PlaylistCover />
+          }
         </Col>
       </Row>
     </div>

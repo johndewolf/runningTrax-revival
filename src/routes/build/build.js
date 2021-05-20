@@ -14,8 +14,8 @@ const Build = () => {
   const token = useSelector(state => state.profile.token)
   const sets = useSelector(state => state.sets.list)
   const dispatch = useDispatch()
+  
   useEffect(() => {
-
     if (window.localStorage.getItem('spotify_token') && !token) {
       console.log("getting token from local storage");
       try {
@@ -33,15 +33,15 @@ const Build = () => {
       window.location.hash = '';
     }
     
-  }, [token, dispatch])
+  }, [token, dispatch]);
+
   const handleOkClick = () => {
     window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`;
   }
+
   const history = useHistory();
   return (
-
     <div>
-
       {!token && (
         (
           <Modal 
