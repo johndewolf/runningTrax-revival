@@ -49,3 +49,82 @@ export const getUsername = (token) => {
       return result;
     })
 }
+
+export const presets = {
+  rolling: [
+    {
+      genre: 'alt-rock',
+      tempo: 131,
+      duration: 480,
+      editing: false
+    },
+    {
+      genre: 'bluegrass',
+      tempo: 150,
+      duration: 360,
+      editing: false
+    },
+    {
+      genre: 'rock',
+      tempo: 130,
+      duration: 480,
+      editing: false
+    },
+    {
+      genre: 'bluegrass',
+      tempo: 160,
+      duration: 360,
+      editing: false
+    },
+    {
+      genre: 'indie',
+      tempo: 135,
+      duration: 480,
+      editing: false
+    },
+    {
+      genre: 'funk',
+      tempo: 170,
+      duration: 360,
+      editing: false
+    },
+    {
+      genre: 'indie',
+      tempo: 140,
+      duration: 480,
+      editing: false
+    }
+  ],
+  building: [
+    {
+      genre: 'chill',
+      tempo: 140,
+      duration: 300,
+      editing: false
+    },
+    {
+      genre: 'ambient',
+      tempo: 150,
+      duration: 360,
+      editing: false
+    },
+    {
+      genre: 'electronic',
+      tempo: 170,
+      duration: 420,
+      editing: false
+    },
+    {
+      genre: 'breakbeat',
+      tempo: 196,
+      duration: 480,
+      editing: false
+    },
+    {
+      genre: 'dubstep',
+      tempo: 211,
+      duration: 540,
+      editing: false
+    }
+  ]
+}

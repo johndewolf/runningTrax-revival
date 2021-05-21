@@ -11,6 +11,10 @@ export const setsSlice = createSlice({
       state.editingSet++;
       state.list.push(action.payload)
     },
+    addSetsFromPreset: (state, action) => {
+      state.editingSet = action.payload.length;
+      state.list = action.payload;
+    },
     deleteSet: (state, action) => {
       state.editingSet = state.list.length ? state.list.length-- : 0;
       state.list = state.list.filter((set, index) => action.payload !== index)
@@ -26,6 +30,6 @@ export const setsSlice = createSlice({
 
 })
 
-export const { addSet, updateSet, deleteSet, updateEditingSet } = setsSlice.actions
+export const { addSet, addSetsFromPreset, updateSet, deleteSet, updateEditingSet } = setsSlice.actions
 
 export default setsSlice.reducer

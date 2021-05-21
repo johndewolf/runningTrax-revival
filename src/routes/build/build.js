@@ -7,9 +7,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import FieldGroup from '../../components/field-group/field-group'
 import Sidebar from '../../components/sidebar/sidebar'
 import Chart from '../../components/chart/chart'
+import PresetSelector from "../../components/preset-selector/preset-selector";
 import { updateToken } from '../../reducers/profile'
 import { authEndpoint, clientId, redirectUri, scopes } from '../../utility/constants'
 import { getHash } from '../../utility/'
+
 const Build = () => {
   const token = useSelector(state => state.profile.token)
   const sets = useSelector(state => state.sets.list)
@@ -57,7 +59,15 @@ const Build = () => {
         </Modal>
         )
       )}
-      <h1>Build a Playlist</h1>
+      <Row  gutter={ 32 }>
+        <Col xs={24} lg={12}>
+          <h1>Build a Playlist</h1>
+        </Col>
+        <Col xs={24} lg={12}>
+          <PresetSelector />
+        </Col>
+      </Row>
+      
       <Row gutter={ 32 }>
         <Col xs={24} lg={8}>
           <FieldGroup />
@@ -65,7 +75,7 @@ const Build = () => {
             <Button onClick={() => {history.push("/result")}} type="primary" disabled={ sets.length === 0 ? true : false}>Generate Playlist</Button>
           </div>
         </Col>
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={13}>
           <Chart />
         </Col>
         <Col xs={24} lg={3}>
