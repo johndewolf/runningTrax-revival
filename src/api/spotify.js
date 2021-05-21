@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 export const getGenreSeeds = (token) => {
-  return axios.get('  https://api.spotify.com/v1/recommendations/available-genre-seeds',
+  return axios.get('https://api.spotify.com/v1/recommendations/available-genre-seeds',
     {headers: {"Authorization": `Bearer ${token}`}
   })
 }
@@ -18,6 +18,16 @@ export const getPlaylistData = (token, miles) => {
       })
       return returnData;
     })
+}
+export const createPlaylist = (token, user_id, title, description) => {
+  return axios.post(`https://api.spotify.com/v1/users/${user_id}/playlists`,
+    {
+      name: title,
+      description: description
+    },
+    {headers: {"Authorization": `Bearer ${token}`},
+  })
+
 }
 
 

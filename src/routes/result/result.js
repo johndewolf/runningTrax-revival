@@ -1,9 +1,10 @@
+import { useSelector, useDispatch } from 'react-redux'
 import { React, useEffect } from "react";
 import { Row, Col, message, Skeleton } from 'antd';
 import Playlist from '../../components/playlist/playlist'
 import PlaylistCover from '../../components/playlist-cover/playlist-cover'
+import PlaylistImporter from '../../components/playlist-importer/playlist-importer'
 import { fetchPlaylistData } from '../../reducers/playlist'
-import { useSelector, useDispatch } from 'react-redux'
 
 const Result = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,17 @@ const Result = () => {
         </Col>
         <Col xs={24} md={12}>
           {!inProgress && 
-            <PlaylistCover />
+          <div className="field-group dropshadow bg-white">
+            <div style={{marginBottom: '16px', fontWeight: 'bold'}}>Import Into Your Account</div>
+            <Row gutter={24}>
+              <Col xs={8}>
+                <PlaylistCover />
+              </Col>
+              <Col xs={16}>
+                <PlaylistImporter />
+              </Col>
+            </Row>
+            </div>
           }
         </Col>
       </Row>
