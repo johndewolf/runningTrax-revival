@@ -27,9 +27,17 @@ export const createPlaylist = (token, user_id, title, description) => {
     },
     {headers: {"Authorization": `Bearer ${token}`},
   })
-
 }
 
+export const addTracksToPlaylist = (token, playlistId, tracks) => {
+  console.log('updated');
+  return axios.post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    JSON.stringify({
+      uris: tracks,
+    }),
+    {headers: {"Authorization": `Bearer ${token}`},
+  })
+}
 
 const getMileTracks = (tracks, target)  => {
   tracks.sort((trackA, trackB) => {
