@@ -17,7 +17,6 @@ const Result = () => {
       message.error('No data to build playlist!');
     }
     else {
-      console.log('fetching playlist data');
       dispatch(fetchPlaylistData({sets: sets, token: token}))
     }
   }, [dispatch, sets, token])

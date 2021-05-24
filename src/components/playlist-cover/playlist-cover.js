@@ -11,7 +11,6 @@ const PlaylistCover = () => {
     let songs = [];
     if (flatten.length > 4) {
       //approximate different parts of the playlist
-      console.log(Math.floor(flatten.length - 1 / 4));
       songs.push(flatten[0]);
       songs.push(flatten[Math.floor((flatten.length - 1) / 4)]);
       songs.push(flatten[Math.floor((flatten.length - 1) * 0.75)]);

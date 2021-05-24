@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState } from "react";
 
 import {
   BrowserRouter as Router,
@@ -13,13 +13,28 @@ import Home from './routes/home/home'
 import Build from './routes/build/build'
 import Result from './routes/result/result'
 import './App.css';
-const { Content } = Layout;
+
+const { Content, Sider } = Layout;
 const App = () => {
+  const [sideBarCollapse, updateSideBarCollapsed] = useState(false)
   return (
   <Router>
+    <Sider
+      style={{
+        overflow: 'auto',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+      }}
+      collapsible
+      collapsed={sideBarCollapse}
+      onCollapse={() => updateSideBarCollapsed(!sideBarCollapse)}
+    >
+      <AppHeader />
+    </Sider>
     <Layout>
-    <AppHeader />
-    <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, height:  'calc(100vh - 64px)' }}>
+    
+    <Content className="site-layout" style={{ marginLeft: '200px', padding: '0 50px', height:  '100vh' }}>
       <div className="site-layout-background" style={{ padding: 24 }}>
         <Switch>
           <Route path="/build" component={Build} />

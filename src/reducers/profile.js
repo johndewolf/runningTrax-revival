@@ -8,20 +8,22 @@ export const fetchUsernameByToken = createAsyncThunk(
     })
     return response.data;
   }
-
 )
+
+const initialState = {
+  username: null,
+  user_id: null,
+  token: null,
+  error: null
+}
 export const profileSlice = createSlice({
   name: 'profile',
-  initialState: {
-    username: null,
-    user_id: null,
-    token: null,
-    error: null
-  },
+  initialState, 
   reducers: {
     updateToken: (state, action) => {
       state.token = action.payload
     },
+    signOut: () => initialState,
   },
   extraReducers: {
     [fetchUsernameByToken.fulfilled]: (state, action) => {
@@ -37,6 +39,6 @@ export const profileSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updateToken } = profileSlice.actions
+export const { updateToken, signOut } = profileSlice.actions
 
 export default profileSlice.reducer

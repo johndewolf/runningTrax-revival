@@ -19,7 +19,6 @@ const Build = () => {
   
   useEffect(() => {
     if (window.localStorage.getItem('spotify_token') && !token) {
-      console.log("getting token from local storage");
       try {
         dispatch(updateToken( window.localStorage.getItem('spotify_token') ))
       }
