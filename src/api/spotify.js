@@ -30,7 +30,6 @@ export const createPlaylist = (token, user_id, title, description) => {
 }
 
 export const addTracksToPlaylist = (token, playlistId, tracks) => {
-  console.log('updated');
   return axios.post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
     JSON.stringify({
       uris: tracks,
@@ -40,29 +39,36 @@ export const addTracksToPlaylist = (token, playlistId, tracks) => {
 }
 
 const getMileTracks = (tracks, target)  => {
+  let result = [];
+  let currentBest;
   tracks.sort((trackA, trackB) => {
-    return trackA.duration_ms - trackB.duration_ms;
+      return trackA.duration_ms - trackB.duration_ms;
   })
-
-  let returnTracks = [];
-  let offset = target;
-  let index = 0;
-  while (offset > 0 && index < 20) {
-    returnTracks.push(tracks[index]);
-    offset = offset - tracks[index].duration_ms;
-    index++;
-  }
-
-  let overValue = offset * -1;
-  let underValue = returnTracks.slice(0, returnTracks.length - 1).reduce((iterator, track) => {
-    return track.duration_ms + iterator;
-  }, 0)
-
-  if (overValue - offset <= target - underValue) {
-    return returnTracks;
-  }
   
-  return returnTracks.slice(0, returnTracks.length - 1)
+  function findCombinations(currentSum, currentList, index) {
+      console.log(currentSum)
+      if (Math.abs(target - currentSum) < currentBest || typeof currentBest === 'undefined' ) {
+          result.push([...currentList]);
+          currentBest = Math.abs(target - currentSum);
+      }
+
+      if ( currentBest < 3000 ) {
+          return;
+      }
+      
+      //if within 3 seconds return current list, break;
+      for (let i = index; i < tracks.length; i++) {
+          // if (i != index && tracks[i] == tracks[i-1]) continue; //already return, go next loop(not recursion)
+          currentList.push(tracks[i]);
+
+          findCombinations(currentSum + tracks[i].duration_ms, currentList, i+1);
+          currentList.pop();
+      }
+
+  }
+  findCombinations(0, [], 0);
+  console.log(currentBest);
+  return result[result.length - 1];
 }
 
 const getSeedTracks = (token, miles) => {

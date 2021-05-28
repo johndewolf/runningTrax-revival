@@ -6,6 +6,9 @@ This project was build with:
 - Ant Design components
 - Spotify Web API
 
+## The idea:
+Build a playlist that is catered towards your next workout. Set the tempo and genre for each set and runningTracks will find the songs that match. Then you can import the playlist into your account. Maybe you want 4 sets of 10 minutes of high insensity and 5 minutes of rest. Or slowly build up the tempo throughout the playlist then cool it down.
+
 ## To Run locally:
 
 In the project directory, you can run:

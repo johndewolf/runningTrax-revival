@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const getMileTracks = (tracks, target)  => {
+  //more accurate (but much slower) algorithm in api/spotify.js file. TODO: use updated algorithm, setup on lambda and move the logic to the api/spotify.js file to clean up this file and make it re-usable. 
   tracks.sort((trackA, trackB) => {
     return trackA.duration_ms - trackB.duration_ms;
   })
@@ -41,7 +42,6 @@ const getRecommendation = async (token, genre, tempo) => {
   )
 }
 const getSeedTracks = async (token, miles) => {
-  console.log('get seed tracks');
   let promiseData = miles.map((mile) => {
     return getRecommendation(token, mile.genre, mile.tempo)
       .then(result => {
