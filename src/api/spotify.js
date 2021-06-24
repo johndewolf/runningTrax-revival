@@ -38,37 +38,13 @@ export const addTracksToPlaylist = (token, playlistId, tracks) => {
   })
 }
 
-const getMileTracks = (tracks, target)  => {
-  let result = [];
-  let currentBest;
-  tracks.sort((trackA, trackB) => {
-      return trackA.duration_ms - trackB.duration_ms;
-  })
-  
-  function findCombinations(currentSum, currentList, index) {
-      console.log(currentSum)
-      if (Math.abs(target - currentSum) < currentBest || typeof currentBest === 'undefined' ) {
-          result.push([...currentList]);
-          currentBest = Math.abs(target - currentSum);
-      }
-
-      if ( currentBest < 3000 ) {
-          return;
-      }
-      
-      //if within 3 seconds return current list, break;
-      for (let i = index; i < tracks.length; i++) {
-          // if (i != index && tracks[i] == tracks[i-1]) continue; //already return, go next loop(not recursion)
-          currentList.push(tracks[i]);
-
-          findCombinations(currentSum + tracks[i].duration_ms, currentList, i+1);
-          currentList.pop();
-      }
-
-  }
-  findCombinations(0, [], 0);
-  console.log(currentBest);
-  return result[result.length - 1];
+export const getMileTracks = (tracks, target)  => {
+  return axios.post(`https://ellv0k7zb8.execute-api.us-east-1.amazonaws.com/dev/tracks`,
+    JSON.stringify({
+      tracks: tracks,
+      target: target
+    })
+  )
 }
 
 const getSeedTracks = (token, miles) => {

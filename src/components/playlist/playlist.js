@@ -3,30 +3,41 @@ import { formatArtistName } from '../../utility/index';
 
 const Playlist = ({playlist}) => {
   let playlistData = [];
-  playlist.forEach((setGroup, setIndex) => {
-    setGroup.forEach((track, trackIndex) => {
-      playlistData.push({
-        name: track.name,
-        artists: formatArtistName(track.artists),
-        set: setIndex + 1
+  if (playlist) {
+    playlist.forEach((setGroup, setIndex) => {
+      setGroup.forEach((track, trackIndex) => {
+        playlistData.push({
+          name: track.name,
+          artists: formatArtistName(track.artists),
+          set: setIndex + 1,
+          duration: track.duration_ms
+        })
       })
     })
-  })
+  }
+  
   const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
     {
       title: 'Artists',
       dataIndex: 'artists',
       key: 'artists',
     },
     {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
       title: 'Set',
       dataIndex: 'set',
       key: 'set',
+
+    },
+    {
+      title: 'Duration',
+      dataIndex: 'duration',
+      key: 'duration',
+
     },
   ];
   return(
