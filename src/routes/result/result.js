@@ -4,8 +4,8 @@ import { Row, Col, message, Skeleton } from 'antd';
 import Playlist from '../../components/playlist/playlist'
 import PlaylistCover from '../../components/playlist-cover/playlist-cover'
 import PlaylistImporter from '../../components/playlist-importer/playlist-importer'
-import { fetchPlaylistData } from '../../reducers/playlist'
-
+import { fetchPlaylistData, updatePlaylistWithSample } from '../../reducers/playlist'
+import { updateWithSampleData } from '../../reducers/sets'
 const Result = () => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.profile.token)
@@ -16,10 +16,16 @@ const Result = () => {
     if (sets.length === 0) {
       message.error('No data to build playlist!');
     }
+
+    if ( window.location.search === '?sampleData=true' ) {
+      dispatch(updatePlaylistWithSample());
+      dispatch(updateWithSampleData());
+    }
     else {
       dispatch(fetchPlaylistData({sets: sets, token: token}))
     }
   }, [dispatch, sets, token])
+  
   return (
 
     <div>

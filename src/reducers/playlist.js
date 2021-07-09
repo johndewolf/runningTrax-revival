@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { getMileTracks } from '../api/spotify'
+import { samplePlaylistData } from '../utility/sample-playlist'
 const getRecommendation = async (token, genre, tempo) => {
   return axios.get('https://api.spotify.com/v1/recommendations',
     {
@@ -38,23 +39,6 @@ export const fetchPlaylistData = createAsyncThunk(
   }
 )
 
-export const exportPlaylist = createAsyncThunk(
-  'playlist/exportPlaylist',
-  async (data, thunkAPI) => {
-    return axios.post(`https://api.spotify.com/v1/users/${data.user_id}`,
-    {
-    data: {
-      name: 'Running Trax Playlist',
-      description: 'dope ass playlist'
-    }},
-    {
-      headers: {
-        "Authorization": `Bearer ${data.token}`
-      },
-    }
-  )
-  }
-)
 export const playlistSlice = createSlice({
   name: 'playlist',
   initialState: {
@@ -63,6 +47,10 @@ export const playlistSlice = createSlice({
     exported: false
   },
   reducers: {
+    updatePlaylistWithSample: () => {
+      console.log(samplePlaylistData);
+      return samplePlaylistData
+    }
   },
   extraReducers: {
     [fetchPlaylistData.fulfilled]: (state, action) => {
@@ -75,18 +63,11 @@ export const playlistSlice = createSlice({
     },
     [fetchPlaylistData.pending]: (state) => {
       state.inProgress = true;
-    },
-    [exportPlaylist.fulfilled]: (state, action) => {
-      state.exported = true;
-    },
-    [exportPlaylist.rejected]: (state, action) => {
-      state.seedData = [];
-      state.exported = false;
-    },
+    }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { updateUsername, updateToken } = playlistSlice.actions
+export const { updatePlaylistWithSample } = playlistSlice.actions
 
 export default playlistSlice.reducer

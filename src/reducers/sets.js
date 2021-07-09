@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
+import { sampleSets } from '../utility/sample-sets'
 export const setsSlice = createSlice({
   name: 'sets',
   initialState: {
@@ -14,6 +14,9 @@ export const setsSlice = createSlice({
     addSetsFromPreset: (state, action) => {
       state.editingSet = action.payload.length;
       state.list = action.payload;
+    },
+    updateWithSampleData: () => {
+      return sampleSets;
     },
     deleteSet: (state, action) => {
       state.editingSet = state.list.length ? state.list.length-- : 0;
@@ -30,6 +33,6 @@ export const setsSlice = createSlice({
 
 })
 
-export const { addSet, addSetsFromPreset, updateSet, deleteSet, updateEditingSet } = setsSlice.actions
+export const { addSet, addSetsFromPreset, updateSet, deleteSet, updateEditingSet, updateWithSampleData } = setsSlice.actions
 
 export default setsSlice.reducer
