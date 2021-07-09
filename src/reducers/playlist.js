@@ -48,7 +48,6 @@ export const playlistSlice = createSlice({
   },
   reducers: {
     updatePlaylistWithSample: () => {
-      console.log(samplePlaylistData);
       return samplePlaylistData
     }
   },
