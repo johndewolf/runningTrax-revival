@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { React, useEffect } from "react";
-import { Row, Col, message, Skeleton } from 'antd';
+import { Row, Col, message } from 'antd';
 import Playlist from '../../components/playlist/playlist'
 import PlaylistCover from '../../components/playlist-cover/playlist-cover'
 import ChartResult from '../../components/chart-result/chart-result'
 import PlaylistImporter from '../../components/playlist-importer/playlist-importer'
-import { fetchPlaylistData, updatePlaylistWithSample } from '../../reducers/playlist'
+import { fetchPlaylistData, updatePlaylistWithSample, resetPlaylist } from '../../reducers/playlist'
 import { updateWithSampleData } from '../../reducers/sets'
 
 const Result = () => {
@@ -14,6 +14,9 @@ const Result = () => {
   const sets = useSelector(state => state.sets.list)
   const playlist = useSelector(state => state.playlist.playlist)
   const inProgress = useSelector(state => state.playlist.inProgress)
+  useEffect(() => {
+    dispatch(resetPlaylist())
+  }, [dispatch])
   useEffect(() => {
     if (sets.length === 0) {
       message.error('No data to build playlist!');
@@ -35,12 +38,7 @@ const Result = () => {
 
       <Row gutter={24}>
         <Col xs={24} md={12}>
-          {inProgress && 
-            <Skeleton active />
-          }
-          {!inProgress && 
-            <Playlist playlist={playlist} />
-          }
+          <Playlist playlist={playlist} />
         </Col>
         <Col xs={24} md={12}>
           {!inProgress && 

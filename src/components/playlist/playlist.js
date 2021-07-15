@@ -1,7 +1,9 @@
+import { useSelector } from 'react-redux'
 import { Table } from 'antd'
 import { formatArtistName, formatTimeString } from '../../utility/index';
 
 const Playlist = ({playlist}) => {
+  const inProgress = useSelector(state => state.playlist.inProgress)
   let playlistData = [];
   if (playlist) {
     playlist.forEach((setGroup, setIndex) => {
@@ -62,6 +64,7 @@ const Playlist = ({playlist}) => {
       columns={columns}
       pagination={false}
       scroll={{y: 500}}
+      loading= {inProgress ? true : false}
     />
   )
 }

@@ -38,17 +38,20 @@ export const fetchPlaylistData = createAsyncThunk(
     return response;
   }
 )
-
+const playlistInitial = {
+  playlist: [],
+  inProgress: true,
+  exported: false
+}
 export const playlistSlice = createSlice({
   name: 'playlist',
-  initialState: {
-    playlist: [],
-    inProgress: true,
-    exported: false
-  },
+  initialState: {...playlistInitial},
   reducers: {
     updatePlaylistWithSample: () => {
       return samplePlaylistData
+    },
+    resetPlaylist: () => {
+      return playlistInitial
     }
   },
   extraReducers: {
@@ -67,6 +70,6 @@ export const playlistSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updatePlaylistWithSample } = playlistSlice.actions
+export const { updatePlaylistWithSample, resetPlaylist } = playlistSlice.actions
 
 export default playlistSlice.reducer
