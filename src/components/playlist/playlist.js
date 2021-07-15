@@ -12,6 +12,7 @@ const Playlist = ({playlist}) => {
           set: setIndex + 1,
           duration: formatTimeString(track.duration_ms / 1000),
           tracksInRow: setGroup.length,
+          key: track.id
         })
       })
     })

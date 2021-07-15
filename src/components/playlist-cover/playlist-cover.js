@@ -16,7 +16,6 @@ const PlaylistCover = () => {
       songs.push(flatten[Math.floor((flatten.length - 1) * 0.75)]);
       songs.push(flatten[flatten.length - 1]);
     }
-    console.log('songs: ', songs);
     let imageUrls = songs.map((song) => song.album.images[1].url)
     updateImages(imageUrls);
   }, [playlist])

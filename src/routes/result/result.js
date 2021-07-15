@@ -3,9 +3,11 @@ import { React, useEffect } from "react";
 import { Row, Col, message, Skeleton } from 'antd';
 import Playlist from '../../components/playlist/playlist'
 import PlaylistCover from '../../components/playlist-cover/playlist-cover'
+import ChartResult from '../../components/chart-result/chart-result'
 import PlaylistImporter from '../../components/playlist-importer/playlist-importer'
 import { fetchPlaylistData, updatePlaylistWithSample } from '../../reducers/playlist'
 import { updateWithSampleData } from '../../reducers/sets'
+
 const Result = () => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.profile.token)
@@ -42,6 +44,7 @@ const Result = () => {
         </Col>
         <Col xs={24} md={12}>
           {!inProgress && 
+          <>
           <div className="field-group dropshadow bg-white">
             <div style={{marginBottom: '16px', fontWeight: 'bold'}}>Import Into Your Account</div>
             <Row gutter={24}>
@@ -52,10 +55,15 @@ const Result = () => {
                 <PlaylistImporter />
               </Col>
             </Row>
-            </div>
+          </div>
+          <div className="bg-white dropshadow" style={{marginTop: '2rem'}}>
+            <ChartResult playlist={playlist} sets={sets} />
+          </div>
+          </>
           }
         </Col>
       </Row>
+      
     </div>
   );
 }

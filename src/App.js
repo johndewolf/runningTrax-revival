@@ -34,7 +34,7 @@ const App = () => {
     </Sider>
     <Layout>
     
-    <Content className="site-layout" style={{ marginLeft: sideBarCollapse ? '80px' : '200px', padding: '0 50px', height:  '100vh' }}>
+    <Content className="site-layout" style={{ marginLeft: sideBarCollapse ? '80px' : '200px', padding: '0 50px', minHeight:  '100vh' }}>
       <div className="site-layout-background" style={{ padding: 24 }}>
         <Switch>
           <Route path="/build" component={Build} />

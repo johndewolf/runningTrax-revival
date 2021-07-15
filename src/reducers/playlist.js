@@ -17,7 +17,7 @@ const getRecommendation = async (token, genre, tempo) => {
 }
 const getSeedTracks = async (token, miles) => {
   
-  let promiseData = miles.map((mile) => {
+  let promiseData = miles.map((mile, i) => {
     return getRecommendation(token, mile.genre, mile.tempo)
       .then( async (result) => {
         let totalTracks = result.data.tracks;

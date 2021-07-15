@@ -19,6 +19,10 @@ export const formatTimeString = (time) => {
   return `${minutes}:${seconds}`;
 }
 
+export const roundToTwoPlaces = (num) => {
+  return Math.round( num * 100 + Number.EPSILON ) / 100;
+}
+
 export const formatArtistName = (artistArr) => {
   return artistArr.map((artist) => artist.name).join(', ')
 }
